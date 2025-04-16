@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Results for "{{ query }}"</h2>
+
+    {% if results %}
+        <ul class="list-group mt-3">
+            {% for movie in results %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('movie_detail', id=movie.id) }}">
+                        {{ movie.title }} ({{ movie.year }})
+                    </a><br>
+                    <small class="text-muted">Genre: {{ movie.genre }} | Director: {{ movie.director }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No movies found.</p>
+    {% endif %}
+</div>
+{% endblock %}

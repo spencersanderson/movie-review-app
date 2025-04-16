@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Filtered Movies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Filtered Movies</h2>
+
+    {% if selected_genre != 'All' %}
+        <p><strong>Genre:</strong> {{ selected_genre }}</p>
+    {% endif %}
+    {% if selected_year != 'All' %}
+        <p><strong>Year:</strong> {{ selected_year }}</p>
+    {% endif %}
+
+    {% if movies %}
+        <ul class="list-group mt-3">
+            {% for movie in movies %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('movie_detail', id=movie.id) }}">
+                        {{ movie.title }} ({{ movie.year }})
+                    </a><br>
+                    <small class="text-muted">Genre: {{ movie.genre }} | Director: {{ movie.director }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No movies found for that filter.</p>
+    {% endif %}
+</div>
+{% endblock %}

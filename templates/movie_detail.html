@@ -1,21 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ movie.title }} - Details</title>
-</head>
-<body>
-    <h1>{{ movie.title }} ({{ movie.year }})</h1>
+{% extends 'base.html' %}
 
-    <h2>Reviews:</h2>
-    <ul>
-        {% for review in movie.reviews %}
-            <li>{{ review }}</li>
-        {% else %}
-            <li>No reviews yet.</li>
-        {% endfor %}
-    </ul>
+{% block title %}{{ movie.title }}{% endblock %}
 
-    <p><a href="/">← Back to movie list</a></p>
-</body>
-</html>
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ movie.title }} ({{ movie.year }})</h2>
+    <p><strong>Director:</strong> {{ movie.director }}</p>  <!-- ADDED LINE -->
+
+    {% if reviews %}
+        <h4 class="mt-4">Reviews:</h4>
+        <ul class="list-group mb-4">
+            {% for review in reviews %}
+                <li class="list-group-item">
+                    <strong>Rating:</strong> {{ review.rating }}<br>
+                    {{ review.review_text }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No reviews yet.</p>
+    {% endif %}
+
+    {% if session.get('loggedin') %}
+        <h4>Leave a Review:</h4>
+        <form method="POST">
+            <div class="mb-3">
+                <textarea class="form-control" name="review" placeholder="Write your review here..." required></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Rating:</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Choose rating</option>
+                    {% for r in range(1, 6) %}
+                        <option value="{{ r }}">{{ r }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    {% else %}
+        <p class="mt-4"><a href="{{ url_for('login') }}">Log in</a> to leave a review.</p>
+    {% endif %}
+</div>
+{% endblock %}

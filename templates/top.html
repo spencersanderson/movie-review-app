@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Top Rated Movies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Top Rated Movies</h2>
+    <ul class="list-group mt-3">
+        {% for movie in movies %}
+            <li class="list-group-item">
+                <a href="{{ url_for('movie_detail', id=movie.id) }}">
+                    {{ movie.title }} ({{ movie.year }})
+                </a><br>
+                <small class="text-muted">
+                    Directed by {{ movie.director }} • Genre: {{ movie.genre }}<br>
+                    ⭐ {{ movie.avg_rating }} ({{ movie.review_count }} review{{ movie.review_count != 1 and 's' or '' }})
+                </small>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
